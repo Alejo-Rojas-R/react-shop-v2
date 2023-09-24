@@ -25,7 +25,7 @@ export const RegisterPage = () => {
     const handleSubmit = (e) => {
 
         // TODO: Handle form submission
-        axios.post('http://localhost/imagineapps-challenge/api/?table=users', JSON.stringify(formData)).then(response => {
+        axios.post('table=users', JSON.stringify(formData)).then(response => {
             return response.data
         }).then(data => {
             navigate('/');

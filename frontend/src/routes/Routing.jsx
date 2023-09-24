@@ -20,6 +20,7 @@ export const Routing = () => {
     const [showDialog, setShowDialog] = useState(false);
 
     return (
+        // redux
         <CartCountContext.Provider value={{ cartCount, setCartCount }}>
             <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>
                 <OrderDialogContext.Provider value={{ showDialog, setShowDialog }}>

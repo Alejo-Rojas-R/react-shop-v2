@@ -3,32 +3,32 @@ import { useContext, useState } from 'react'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserInfoContext } from '../../routes/Routing';
+import { useForm } from '../../hooks/useForm';
 
 export const LoginPage = () => {
-  const { setUserInfo } = useContext(UserInfoContext)
+  const { setUserInfo } = useContext(UserInfoContext);
   const navigate = useNavigate();
-  const [error, setError] = useState('')
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const { email, password, handleChange } = useForm({
+    email: '',
+    password: '',
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    console.log({email, password})
+
     // TODO: Handle form submission
-    axios.get('http://localhost/imagineapps-challenge/api/?table=users&validate_user=true', { params: formData }).then(response => {
+    axios.get('table=users&validate_user=true', { params: formData }).then(response => {
       return response.data
     }).then(data => {
       if (!data) {
         setError('No user found with these credentials');
       } else {
         navigate('/');
-        setUserInfo({ 'id': data.id, 'name': formData.email });
+        setUserInfo({ 'id': data.id, 'name': email });
       }
     }).catch(error => {
       console.log(error.response.data.error)
@@ -44,12 +44,12 @@ export const LoginPage = () => {
 
             <Form.Group controlId='email'>
               <Form.Label>Email</Form.Label>
-              <Form.Control type='email' name='email' value={formData.email} onChange={handleChange} required />
+              <Form.Control type='email' name='email' value={email} onChange={handleChange} required />
             </Form.Group>
 
             <Form.Group controlId='password'>
               <Form.Label>Password</Form.Label>
-              <Form.Control type='password' name='password' value={formData.password} onChange={handleChange} required />
+              <Form.Control type='password' name='password' value={password} onChange={handleChange} required />
               <Form.Text className='danger' muted>{error}</Form.Text>
             </Form.Group>
 
